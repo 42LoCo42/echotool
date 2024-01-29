@@ -152,6 +152,7 @@ func SetupDefaultEcho[User any](
 		c.SetCookie(&http.Cookie{
 			Name:     "auth",
 			Value:    signed,
+			Path:     "/",
 			Expires:  expires,
 			Secure:   true,
 			HttpOnly: true,
@@ -163,4 +164,3 @@ func SetupDefaultEcho[User any](
 
 	return e, api
 }
-
