@@ -37,6 +37,15 @@ func MkHash(user string, pass string) string {
 	))
 }
 
+func Auth(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		if c.Get("user") == nil {
+			return Die(http.StatusUnauthorized, nil, "needs authentication")
+		}
+		return next(c)
+	}
+}
+
 func SetupDefaultEcho[User any](
 	staticFS http.FileSystem,
 	jwtKeyB64 string,
