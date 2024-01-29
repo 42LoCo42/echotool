@@ -34,9 +34,9 @@ Helper functions for working with [[https://echo.labstack.com/][echo]] - a web f
       e, api := echotool.SetupDefaultEcho(
           http.FS(embedFS), // directory for static files (can be nil to read from disk)
 
-          os.Getenv("YOUR_TOKEN_KEY"), // auth token key
-          "appname",                   // auth token issuer
-          time.Hour*24,                // auth token lifetime
+          os.Getenv("JWT_KEY_VAR"), // auth token key
+          "appname",                // auth token issuer
+          time.Hour*24,             // auth token lifetime
 
           func(name string) (*User, error) {
               // find a user by name
@@ -55,6 +55,10 @@ Helper functions for working with [[https://echo.labstack.com/][echo]] - a web f
       e.GET("/example", func(c echo.Context) error {
           return c.JSON(http.StatusOK, c.Get("user"))
       }, echotool.Auth) // this endpoint requires authentication
+
+      e.GET("/error", func(c echo.Context) error {
+          return echotool.Die(http.StatusInternalServerError, nil, "error message")
+      })
 
       e.Start(":8080")
   }
